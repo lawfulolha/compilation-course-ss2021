@@ -1,3 +1,6 @@
+// CompilLab2.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
 /*
 9) S -> begin I = T {; I = T} end;
 
@@ -85,70 +88,71 @@ private:
 
 public:
 	
-	string trimmedString="";
+	string line="";
 	int position = 0; 
 	int lineNumber = 0;
 
-	Analizator() {}; 
+	ofstream file;
+	Analizator() { 
+		file.open("result.txt", std::ofstream::out | std::ofstream::app);
+	};
 	inline void skipSpaces() {
 
 		int flag = false;
-		for (i = 1; trimmedString.at(position + i) && !flag; ++i) {
-			if (trimmedString.at(position + i) != ' ') {
+		for (i = 1; line.at(position + i) && !flag; ++i) {
+			if (line.at(position + i) != ' ') {
 				flag = true;
 			}
 		}
 		flag = false;
-		for (j = 1; trimmedString.at(position - j) && !flag; ++j) {
-			if (trimmedString.at(position - j) != ' ') {
+		for (j = 1; line.at(position - j) && !flag; ++j) {
+			if (line.at(position - j) != ' ') {
 				flag = true;
 			}
 		}
 	}
 	Lex get_token() {
 
-		ofstream file;
-		file.open("result.txt", std::ofstream::out | std::ofstream::app);
 		  
 		char c;
 		 
-		if( position < trimmedString.size() ) c = trimmedString.at(position); 
+		if( position < line.size() ) c = line.at(position); 
 		
 		else return { lineNumber, "end line" , END };
 
-		if (position < trimmedString.size() - 1 && c == ' ') {
+		if (position < line.size() - 1 && c == ' ') {
 			lexema = { lineNumber, "space" , SPACE }; 
 			++position;
 			return lexema;
 		}
 
-		else if (position > trimmedString.size() -1 ||c=='\n') {
+		else if (position > line.size() -1 ||c=='\n') {
 			lexema = { lineNumber, "end line" , END}; 
-			file << lexema.getInfo() << endl;
+			if (file.is_open()) file << lexema.getInfo() << endl;
 			++position;
 			return lexema;
 		} 
 
 		if (c == 'b') {
-			if (trimmedString.at(position + 4)) {
+			if (line.at(position + 4)) {
 				string word; 
 
-				word = trimmedString.substr(position, 5);
+				word = line.substr(position, 5);
 				if (word == "begin") {
 
 					lexema = Lex{ lineNumber, word, TERMINAL }; 
-					file << lexema.getInfo() << endl;
+					if (file.is_open()) file << lexema.getInfo() << endl;
 
 					position+=5;
 					return lexema;
 				}
 			} 
-				if (trimmedString.at(position + 1)) {
+				if (line.at(position + 1)) {
 
-					if (trimmedString.at(position + 1) == 'a') {
+					if (line.at(position + 1) == 'a') {
 
 						lexema = Lex{ lineNumber, "ba", Token::WORD }; 
-						file << lexema.getInfo() << endl;
+						if (file.is_open()) file << lexema.getInfo() << endl;
 
 						position += 2;
 						return lexema;
@@ -156,24 +160,24 @@ public:
 				} 
 				 
 			int flag = false;
-			for (i = 1; trimmedString.at(position + i) && !flag; ++i) {
-				if (!isalpha(trimmedString.at(position + i))) {
+			for (i = 1; line.at(position + i) && !flag; ++i) {
+				if (!isalpha(line.at(position + i))) {
 					flag = true;
 				}
 			} 
 			
-			return Lex{ lineNumber,  trimmedString.substr(position++, i-1), UNKNOWN };
+			return Lex{ lineNumber,  line.substr(position++, i-1), UNKNOWN };
 		}
 
 		if (c == 'e') {
-			if (trimmedString.at(position + 2)) {
+			if (line.at(position + 2)) {
 				string word; 
 
-				word = trimmedString.substr(position, 3);
+				word = line.substr(position, 3);
 				if (word == "end") {
 
 					lexema = Lex{ lineNumber, word, TERMINAL }; 
-					file << lexema.getInfo() << endl;
+					if (file.is_open()) file << lexema.getInfo() << endl;
 
 					position+=3;
 					return lexema;
@@ -185,11 +189,11 @@ public:
 
 		if (c == ';') {
 
-			if (trimmedString.at(position - 1)) {
-				if (trimmedString.at(position - 1) == '{' || trimmedString.at(position - 1) == 'd') {
+			if (line.at(position - 1)) {
+				if (line.at(position - 1) == '{' || line.at(position - 1) == 'd') {
 
 						lexema = Lex{ lineNumber,  string{c}, SMCLN }; 
-						file << lexema.getInfo() << endl;
+						if (file.is_open()) file << lexema.getInfo() << endl;
 
 						++position;
 						return lexema;
@@ -202,12 +206,12 @@ public:
 
 		if (c == '{') { 
 			skipSpaces();
-			if (trimmedString.at(position - j + 1 ) && trimmedString.at(position + i - 1)) {
-				if ((trimmedString.at(position - j + 1) == 'a' || trimmedString.at(position - j + 1) == 'b' || trimmedString.at(position - j + 1) == '0')
-					&& trimmedString.at(position + i - 1 )==';') {
+			if (line.at(position - j + 1 ) && line.at(position + i - 1)) {
+				if ((line.at(position - j + 1) == 'a' || line.at(position - j + 1) == 'b' || line.at(position - j + 1) == '0')
+					&& line.at(position + i - 1 )==';') {
 
 					lexema = Lex{ lineNumber,  string{c}, LBR }; 
-					file << lexema.getInfo() << endl;
+					if (file.is_open()) file << lexema.getInfo() << endl;
 
 					++position;
 					return lexema;
@@ -222,23 +226,23 @@ public:
 			int i, j;
 
 			int flag=false;
-			for (i = 1; trimmedString.at(position + i)&&!flag; ++i) {
-				if (trimmedString.at(position + i) != ' ') {
+			for (i = 1; line.at(position + i)&&!flag; ++i) {
+				if (line.at(position + i) != ' ') {
 					flag = true;
 				}
 			} 
 			flag = false;
-			for (j = 1; trimmedString.at(position - j) && !flag; ++j) {
-				if (trimmedString.at(position - j) != ' ') {
+			for (j = 1; line.at(position - j) && !flag; ++j) {
+				if (line.at(position - j) != ' ') {
 					flag = true;
 				}
 			} 
 
-			if (trimmedString.at(position - j + 1) && trimmedString.at(position + i - 1)) {
-				if ((trimmedString.at(position - j + 1) == 'a' || trimmedString.at(position - j + 1) == 'b' || trimmedString.at(position - j + 1) == '0')
-					&& trimmedString.at(position + i - 1 ) == 'e') {  
+			if (line.at(position - j + 1) && line.at(position + i - 1)) {
+				if ((line.at(position - j + 1) == 'a' || line.at(position - j + 1) == 'b' || line.at(position - j + 1) == '0')
+					&& line.at(position + i - 1 ) == 'e') {  
 					lexema = Lex{ lineNumber,  string{c}, RBR }; 
-					file << lexema.getInfo() << endl;
+					if (file.is_open()) file << lexema.getInfo() << endl;
 
 					position++;
 					return lexema;
@@ -250,14 +254,14 @@ public:
 
 		if (c == '^' || c=='*' ||c=='/' || c=='=') {
 			skipSpaces();
-			if (trimmedString.at(position - j + 1) && trimmedString.at(position + 1)) {
+			if (line.at(position - j + 1) && line.at(position + 1)) {
 
-				if ((trimmedString.at(position +i-1) == 'a' || trimmedString.at(position +i-1) == 'b' || trimmedString.at(position +i-1) == '1') &&
-					(trimmedString.at(position - j + 1) == 'a' || trimmedString.at(position - j + 1) == 'b' || trimmedString.at(position - j + 1) == '0')) {
+				if ((line.at(position +i-1) == 'a' || line.at(position +i-1) == 'b' || line.at(position +i-1) == '1') &&
+					(line.at(position - j + 1) == 'a' || line.at(position - j + 1) == 'b' || line.at(position - j + 1) == '0')) {
 					
 
 					lexema = Lex{ lineNumber,  string{c}, (c == '^')?POW: (c == '*')? MULT: (c == '/')?DIV:EQ }; 
-					file << lexema.getInfo() << endl;
+					if (file.is_open()) file << lexema.getInfo() << endl;
 
 					++position;
 					return lexema;
@@ -267,12 +271,12 @@ public:
 			return Lex{ lineNumber,  string{c}, UNKNOWN };
 		}
 		if (c == 'a') {
-			if (trimmedString.at(position + 1)) {
+			if (line.at(position + 1)) {
 
-				if (trimmedString.at(position + 1) == 'b') {
+				if (line.at(position + 1) == 'b') {
 
 					lexema = Lex{ lineNumber, "ab", Token::WORD }; 
-					file << lexema.getInfo() << endl;
+					if (file.is_open()) file << lexema.getInfo() << endl;
 
 					position+=2;
 					return lexema;
@@ -283,20 +287,20 @@ public:
 		}
 	
 		if (c == '1') {
-			if (trimmedString.at(position + 1)) {
-				if (trimmedString.at(position + 2)) {
-					if (trimmedString.at(position + 1) == '0' && trimmedString.at(position + 2) == '0') {
+			if (line.at(position + 1)) {
+				if (line.at(position + 2)) {
+					if (line.at(position + 1) == '0' && line.at(position + 2) == '0') {
 						lexema = Lex{ lineNumber, "100", Token::NUMBER }; 
-						file << lexema.getInfo() << endl;
+						if (file.is_open()) file << lexema.getInfo() << endl;
 
 						position += 3;
 						return lexema;
 					}
 				}
-					if (trimmedString.at(position + 1) == '0') {
+					if (line.at(position + 1) == '0') {
 
 						lexema = Lex{ lineNumber, "10", Token::NUMBER }; 
-						file << lexema.getInfo() << endl;
+						if (file.is_open()) file << lexema.getInfo() << endl;
 
 						position += 2;
 						return lexema;
@@ -309,13 +313,13 @@ public:
 		else {
 			 
 			int flag = false;
-			for (i = 0; !flag && position + i < trimmedString.size(); ++i) {
-				if (!isalpha(trimmedString.at(position + i))) {
+			for (i = 0; !flag && position + i < line.size(); ++i) {
+				if (!isalpha(line.at(position + i))) {
 					flag = true;
 				}
 			}
 
-			return Lex{ lineNumber,  trimmedString.substr(position++, i), UNKNOWN }; 
+			return Lex{ lineNumber,  line.substr(position++, i), UNKNOWN }; 
 			}
 		};
 
@@ -337,21 +341,21 @@ int main()
 	} 
 
 	analizator.lineNumber = 1;
-		while (getline(myfile, l)) {
-			line = l;
-			string trimmedString = l;
-			//trimmedString.erase(std::remove(trimmedString.begin(), trimmedString.end(), ' '), trimmedString.end());
-analizator.position = 0;
-			analizator.trimmedString = trimmedString;
+		while (getline(myfile, l)) { 
+			string line = l;
+			 
+	analizator.position = 0;
+			analizator.line = line;
 
 			do {
 				currentToken = analizator.get_token(); 
-			} while (currentToken.token != END && currentToken.token != UNKNOWN && currentToken.num<trimmedString.size()-1);
+			} while (currentToken.token != END && currentToken.token != UNKNOWN && currentToken.num<line.size()-1);
 				  
-			if (currentToken.token == END || currentToken.num == trimmedString.size() - 1)
+			if (currentToken.token == END || currentToken.num == line.size() - 1)
 				cout << line << " is valid in given grammar." << endl; 
 
 			 if (currentToken.token == UNKNOWN) {
+				analizator.file.close();
 				cout << "Unknown lexema '" + currentToken.value + "' at line " + to_string(analizator.lineNumber ) + " at position " + to_string(analizator.position);
 				cout << "  " << line << " is not valid in given grammar." << endl;
 			}
