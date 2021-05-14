@@ -1,1 +1,20 @@
-
+< 1, begin, TERMINAL > 
+ < 1, ab, WORD > 
+ < 1, =, EQ > 
+ < 1, ab, WORD > 
+ < 1, *, MULT > 
+ < 1, ba, WORD > 
+ < 1, {, LBR > 
+ < 1, ;, SMCLN > 
+ < 1, ba, WORD > 
+ < 1, =, EQ > 
+ < 1, ba, WORD > 
+ < 1, *, MULT > 
+ < 1, ba, WORD > 
+ < 1, ^, POW > 
+ < 1, 10, NUMBER > 
+ < 1, /, DIV > 
+ < 1, ab, WORD > 
+ < 1, }, RBR > 
+ < 1, end, TERMINAL > 
+ < 1, ;, SMCLN > 
