@@ -1,10 +1,18 @@
-< 1, begin, TERMINAL > 
+ < 1, begin, TERM_BEGIN > 
  < 1, ab, WORD > 
  < 1, =, EQ > 
  < 1, ab, WORD > 
  < 1, *, MULT > 
  < 1, ba, WORD > 
- < 1, {, LBR > 
+ < 1, ;, SMCLN > 
+ < 1, ba, WORD > 
+ < 1, =, EQ > 
+ < 1, ab, WORD > 
+ < 1, *, MULT > 
+ < 1, ba, WORD > 
+ < 1, ^, POW > 
+ < 1, /, DIV > 
+ < 1, ab, WORD > 
  < 1, ;, SMCLN > 
  < 1, ba, WORD > 
  < 1, =, EQ > 
@@ -15,6 +23,63 @@
  < 1, 10, NUMBER > 
  < 1, /, DIV > 
  < 1, ab, WORD > 
- < 1, }, RBR > 
- < 1, end, TERMINAL > 
+ < 1, end, TERM_END > 
  < 1, ;, SMCLN > 
+ < 2, begin, TERM_BEGIN > 
+ < 2, ab, WORD > 
+ < 2, =, EQ > 
+ < 2, ab, WORD > 
+ < 2, *, MULT > 
+ < 2, ba, WORD > 
+ < 2, ba, WORD > 
+ < 2, =, EQ > 
+ < 2, ab, WORD > 
+ < 2, *, MULT > 
+ < 2, ba, WORD > 
+ < 2, ^, POW > 
+ < 2, 10, NUMBER > 
+ < 2, /, DIV > 
+ < 2, ab, WORD > 
+ < 2, ;, SMCLN > 
+ < 2, ba, WORD > 
+ < 2, =, EQ > 
+ < 2, ba, WORD > 
+ < 2, *, MULT > 
+ < 2, ba, WORD > 
+ < 2, ^, POW > 
+ < 2, 10, NUMBER > 
+ < 2, /, DIV > 
+ < 2, ab, WORD > 
+ < 2, end, TERM_END > 
+ < 2, ;, SMCLN > 
+ < 3, begin, TERM_BEGIN > 
+ < 3, end, TERM_END > 
+ < 3, ;, SMCLN > 
+ < 4, begin, TERM_BEGIN > 
+ < 4, ab, WORD > 
+ < 4, =, EQ > 
+ < 4, ab, WORD > 
+ < 4, *, MULT > 
+ < 4, ba, WORD > 
+ < 4, ;, SMCLN > 
+ < 4, ba, WORD > 
+ < 4, =, EQ > 
+ < 4, ab, WORD > 
+ < 4, *, MULT > 
+ < 4, ba, WORD > 
+ < 4, ^, POW > 
+ < 4, 100, NUMBER > 
+ < 4, /, DIV > 
+ < 4, ab, WORD > 
+ < 4, ;, SMCLN > 
+ < 4, ba, WORD > 
+ < 4, =, EQ > 
+ < 4, ba, WORD > 
+ < 4, *, MULT > 
+ < 4, ba, WORD > 
+ < 4, ^, POW > 
+ < 4, 10, NUMBER > 
+ < 4, /, DIV > 
+ < 4, ab, WORD > 
+ < 4, end, TERM_END > 
+ < 4, ;, SMCLN > 
